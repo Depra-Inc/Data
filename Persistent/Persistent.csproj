@@ -1,8 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Depra.Data.Persistent</RootNamespace>
+        <Authors>Nikolay Melnikov</Authors>
+        <PackageId>Depra.Data.Persistent</PackageId>
+        <Company>Depra</Company>
+        <Product>Persistent Data</Product>
+        <PackageTags>data, persistent, storage, save, load, saving, loading</PackageTags>
+        <Description>Module for saving, loading data to disk.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Depression-aggression/Data</RepositoryUrl>
     </PropertyGroup>
 
 </Project>
