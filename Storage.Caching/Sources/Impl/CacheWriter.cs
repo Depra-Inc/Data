@@ -1,5 +1,5 @@
-﻿using Depra.Data.Storage.Caching.Interfaces;
-using Depra.Data.Storage.Middleware.Api;
+﻿using Depra.Data.Storage.Api;
+using Depra.Data.Storage.Caching.Interfaces;
 
 namespace Depra.Data.Storage.Caching.Impl
 {

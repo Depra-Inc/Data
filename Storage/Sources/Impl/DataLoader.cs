@@ -1,7 +1,6 @@
-﻿using Depra.Data.Storage.Loading.Api;
-using Depra.Data.Storage.Middleware.Api;
+﻿using Depra.Data.Storage.Api;
 
-namespace Depra.Data.Storage.Loading.Impl
+namespace Depra.Data.Storage.Impl
 {
     public readonly struct DataLoader : IDataLoader
     {

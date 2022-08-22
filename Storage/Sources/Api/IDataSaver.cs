@@ -1,4 +1,4 @@
-﻿namespace Depra.Data.Storage.Saving.Api
+﻿namespace Depra.Data.Storage.Api
 {
     public interface IDataSaver
     {

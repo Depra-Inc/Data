@@ -5,10 +5,9 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Validators;
 using Depra.Data.Storage.Extensions;
-using Depra.Data.Storage.Loading.Impl;
-using Depra.Data.Storage.Local;
-using Depra.Data.Storage.Middleware.Impl;
-using Depra.Data.Storage.Saving.Impl;
+using Depra.Data.Storage.Impl;
+using Depra.Data.Storage.IO;
+using Depra.Data.Storage.Serialization;
 
 namespace Depra.Data.Storage.Benchmark
 {
@@ -20,7 +19,7 @@ namespace Depra.Data.Storage.Benchmark
     {
         private const string FilePath = nameof(LocalDataStorage);
         private const string FileFormat = ".test";
-        private const string Directory = "Storage.Tests";
+        private const string Directory = "Storage.IO.Tests";
 
         private class Config : ManualConfig
         {

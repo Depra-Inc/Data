@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using Depra.Data.Storage.Api;
-using Depra.Data.Storage.Loading.Api;
-using Depra.Data.Storage.Middleware.Api;
-using Depra.Data.Storage.Saving.Api;
 
-namespace Depra.Data.Storage.Local
+namespace Depra.Data.Storage.Impl
 {
     public class LocalDataStorage : IDataStorage
     {

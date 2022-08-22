@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Depra.Data.Storage.Middleware.Api
+namespace Depra.Data.Storage.Api
 {
     /// <summary>
     /// Interface for all serializers for saving/restoring data.

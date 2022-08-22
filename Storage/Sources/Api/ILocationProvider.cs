@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Depra.Data.Storage.Middleware.Api
+namespace Depra.Data.Storage.Api
 {
     public interface ILocationProvider
     {

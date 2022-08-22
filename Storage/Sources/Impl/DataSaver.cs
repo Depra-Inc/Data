@@ -1,8 +1,7 @@
-﻿using Depra.Data.Storage.Internal.Exceptions;
-using Depra.Data.Storage.Middleware.Api;
-using Depra.Data.Storage.Saving.Api;
+﻿using Depra.Data.Storage.Api;
+using Depra.Data.Storage.Internal.Exceptions;
 
-namespace Depra.Data.Storage.Saving.Impl
+namespace Depra.Data.Storage.Impl
 {
     public readonly struct DataSaver : IDataSaver
     {

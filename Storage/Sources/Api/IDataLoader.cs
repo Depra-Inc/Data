@@ -1,4 +1,4 @@
-﻿namespace Depra.Data.Storage.Loading.Api
+﻿namespace Depra.Data.Storage.Api
 {
     public interface IDataLoader
     {

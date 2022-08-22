@@ -9,10 +9,6 @@ namespace Depra.Data.Storage.Caching.Impl
     public class ThreadSafeCacheDictionary : ICacheCollection
     {
         private readonly ConcurrentDictionary<string, object> _cacheMap;
-
-        public int Count => _cacheMap.Count;
-        
-        public bool Contains(string fileName) => _cacheMap.ContainsKey(fileName);
         
         public object Get(string uri)
         {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Depra.Data.Storage.Middleware.Api;
+using Depra.Data.Storage.Api;
 
-namespace Depra.Data.Storage.Middleware.Impl
+namespace Depra.Data.Storage.IO
 {
     public readonly struct FileReader : IDataReader
     {

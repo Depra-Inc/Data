@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Caching.Interfaces;
-using Depra.Data.Storage.Middleware.Api;
 
 namespace Depra.Data.Storage.Caching.Impl
 {

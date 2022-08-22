@@ -1,4 +1,4 @@
-﻿namespace Depra.Data.Storage.Middleware.Api
+﻿namespace Depra.Data.Storage.Api
 {
     public interface IDataReader
     {

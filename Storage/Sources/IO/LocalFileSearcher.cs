@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Depra.Data.Storage.Middleware.Impl
+namespace Depra.Data.Storage.IO
 {
     public readonly struct LocalFileSearcher
     {

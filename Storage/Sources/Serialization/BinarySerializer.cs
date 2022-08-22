@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Depra.Data.Storage.Middleware.Api;
+using Depra.Data.Storage.Api;
 
-namespace Depra.Data.Storage.Middleware.Impl
+namespace Depra.Data.Storage.Serialization
 {
     /// <summary>
     /// Binary Serializer for saving/restoring data.

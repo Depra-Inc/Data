@@ -14,4 +14,8 @@
         <AssemblyName>Depra.Data.Storage</AssemblyName>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Sources\Caching" />
+    </ItemGroup>
+
 </Project>
