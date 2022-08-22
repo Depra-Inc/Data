@@ -1,12 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistent", "Persistent\Persistent.csproj", "{4A71FA74-8F5F-4B18-A9BD-B1C9FE48886D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\Storage.csproj", "{4A71FA74-8F5F-4B18-A9BD-B1C9FE48886D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistent.Tests", "Persistent.Tests\Persistent.Tests.csproj", "{60D75B7B-6965-4686-AC67-B90B2692D76A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Tests", "Storage.Tests\Storage.Tests.csproj", "{60D75B7B-6965-4686-AC67-B90B2692D76A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistent.Benchmark", "Persistent.Benchmark\Persistent.Benchmark.csproj", "{6A122A86-2441-4E4B-8159-294AE1C50C9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Benchmark", "Storage.Benchmark\Storage.Benchmark.csproj", "{6A122A86-2441-4E4B-8159-294AE1C50C9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryption", "Encryption\Encryption.csproj", "{6182025F-D00C-4EB9-9E18-DB3F0CF775E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Caching.Memory", "Storage.Caching.Memory\Storage.Caching.Memory.csproj", "{986D298B-29B9-4F9D-8902-95D35E76D4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Caching", "Storage.Caching\Storage.Caching.csproj", "{9D1EC6F4-F024-4498-8D12-30BCF5598F4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Caching.Tests", "Storage.Caching.Tests\Storage.Caching.Tests.csproj", "{62C88076-F414-4570-8F67-B87AC8854871}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +36,17 @@ Global
 		{6182025F-D00C-4EB9-9E18-DB3F0CF775E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6182025F-D00C-4EB9-9E18-DB3F0CF775E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6182025F-D00C-4EB9-9E18-DB3F0CF775E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{986D298B-29B9-4F9D-8902-95D35E76D4DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{986D298B-29B9-4F9D-8902-95D35E76D4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{986D298B-29B9-4F9D-8902-95D35E76D4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{986D298B-29B9-4F9D-8902-95D35E76D4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D1EC6F4-F024-4498-8D12-30BCF5598F4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D1EC6F4-F024-4498-8D12-30BCF5598F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D1EC6F4-F024-4498-8D12-30BCF5598F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D1EC6F4-F024-4498-8D12-30BCF5598F4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C88076-F414-4570-8F67-B87AC8854871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C88076-F414-4570-8F67-B87AC8854871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C88076-F414-4570-8F67-B87AC8854871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C88076-F414-4570-8F67-B87AC8854871}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

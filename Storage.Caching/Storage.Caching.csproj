@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>Depra.Data.Storage.Caching</AssemblyName>
+        <RootNamespace>Depra.Data.Storage.Caching</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Sources" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Storage\Storage.csproj" />
+    </ItemGroup>
+
+</Project>
