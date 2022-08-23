@@ -4,10 +4,12 @@ namespace Depra.Data.Storage.Api
 {
     public interface ILocationProvider
     {
+        void Remove(string fileName);
+        
         IEnumerable<string> ScanFilenames();
+        
+        bool ContainsDataByName(string fileName);
 
-        bool ContainsDataByName(string key);
-
-        string CombineFullFilePath(string key);
+        string CombineFullFilePath(string fileName);
     }
 }

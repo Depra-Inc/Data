@@ -10,17 +10,19 @@ namespace Depra.Data.Storage.IO
         private readonly string _directoryPath;
         private readonly LocalFileSearcher _fileSearcher;
 
+        public void Remove(string fileName) => File.Delete(CombineFullFilePath(fileName));
+
         public IEnumerable<string> ScanFilenames()
         {
             var filenames = _fileSearcher.GetAllFiles(_directoryPath);
             return StripFilenamesExtension(filenames);
         }
 
-        public bool ContainsDataByName(string key) =>
-            File.Exists(CombineFullFilePath(key));
+        public bool ContainsDataByName(string fileName) =>
+            File.Exists(CombineFullFilePath(fileName));
 
-        public string CombineFullFilePath(string key) =>
-            Path.Combine(_directoryPath, key) + _format;
+        public string CombineFullFilePath(string fileName) =>
+            Path.Combine(_directoryPath, fileName) + _format;
 
         public LocalFileLocation(string directoryPath, string format, SearchOption searchOption) : this()
         {

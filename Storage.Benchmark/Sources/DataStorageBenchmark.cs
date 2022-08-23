@@ -4,7 +4,7 @@ using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Validators;
-using Depra.Data.Storage.Extensions;
+using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Impl;
 using Depra.Data.Storage.IO;
 using Depra.Data.Storage.Serialization;
@@ -32,7 +32,7 @@ namespace Depra.Data.Storage.Benchmark
             }
         }
 
-        private LocalDataStorage _dataStorage;
+        private IDataStorage _dataStorage;
 
         [Benchmark]
         public void SaveAndLoad()
@@ -44,13 +44,14 @@ namespace Depra.Data.Storage.Benchmark
         [GlobalSetup]
         public void GlobalSetup()
         {
-            var serializer = new BinarySerializer();
-            var dataReader = new FileReader(serializer);
-            var dataWriter = new FileWriter(serializer);
             var location = new LocalFileLocation(Directory, FileFormat, SearchOption.TopDirectoryOnly);
-            var dataSaver = new DataSaver(dataWriter, location);
-            var dataLoader = new DataLoader(dataReader, location);
-            _dataStorage = new LocalDataStorage(location, dataSaver, dataLoader);
+            var serializer = new BinarySerializer();
+            
+            _dataStorage = new StandardDataStorageBuilder()
+                .SetLocation(location)
+                .SetSaver(saver => saver.AddWriter(new FileWriter<TestData>(serializer)))
+                .SetLoader(loader => loader.AddReader(new FileReader<TestData>(serializer)))
+                .Build();
         }
 
         private void Save()

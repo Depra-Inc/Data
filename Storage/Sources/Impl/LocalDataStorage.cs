@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Depra.Data.Storage.Api;
+using Depra.Data.Storage.Api.Loading;
+using Depra.Data.Storage.Api.Saving;
 
 namespace Depra.Data.Storage.Impl
 {
@@ -11,20 +13,11 @@ namespace Depra.Data.Storage.Impl
 
         public IEnumerable<string> GetAllKeys() => _location.ScanFilenames();
 
-        public void SaveData(string name, object data)
-        {
-            _dataSaver.SaveData(name, data);
-        }
+        public void SaveData<TData>(string name, TData data) => _dataSaver.SaveData(name, data);
+        
+        public TData LoadData<TData>(string name, TData defaultValue) => _dataLoader.LoadData(name, defaultValue);
 
-        public object LoadData(string name, object defaultValue)
-        {
-            return _dataLoader.LoadData(name, defaultValue);
-        }
-
-        public void RemoveData(string name)
-        {
-            _dataSaver.RemoveData(name);
-        }
+        public void RemoveData(string name) => _dataSaver.RemoveData(name);
 
         public void Clear()
         {

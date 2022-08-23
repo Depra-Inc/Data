@@ -4,9 +4,9 @@ namespace Depra.Data.Storage.Api
 {
     public interface IDataStorage
     {
-        void SaveData(string name, object data);
+        void SaveData<TData>(string name, TData data);
         
-        object LoadData(string name, object defaultValue);
+        TData LoadData<TData>(string name, TData defaultValue);
         
         void RemoveData(string name);
 

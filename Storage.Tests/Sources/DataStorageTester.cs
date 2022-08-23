@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Depra.Data.Storage.Api;
-using Depra.Data.Storage.Extensions;
 using NUnit.Framework;
 
 namespace Depra.Data.Storage.Tests
@@ -9,51 +7,49 @@ namespace Depra.Data.Storage.Tests
     internal class DataStorageTester
     {
         private readonly string _path;
-        
-        public void SaveDataTo(IDataStorage storage)
-        {
-            storage.Clear();
+        private readonly IDataStorage _dataStorage;
 
+        public void SaveDataTo()
+        {
             var sourceData = new TestData();
-            storage.SaveData(_path, sourceData);
-            var allKeys = storage.GetAllKeys().ToArray();
+            _dataStorage.SaveData(_path, sourceData);
+            var allKeys = _dataStorage.GetAllKeys().ToArray();
             var savedData = allKeys.Single(path => path == _path);
 
             var isStorageContainsSavedData = allKeys.Contains(_path);
-            
+
             Assert.IsTrue(isStorageContainsSavedData);
             Assert.AreEqual(1, allKeys.Length);
             Assert.AreEqual(_path, savedData);
         }
 
-        public void SaveAndLoadData(IDataStorage storage)
+        public void SaveAndLoadData()
         {
-            storage.Clear();
-
             var sourceData = new TestData();
-            storage.SaveData(_path, sourceData);
-            var restoredData = storage.LoadData<TestData>(_path, null);
+            _dataStorage.SaveData(_path, sourceData);
+            var restoredData = _dataStorage.LoadData(_path, TestData.Empty);
 
-            Assert.AreEqual(1, storage.GetAllKeys().Count());
+            Assert.AreEqual(1, _dataStorage.GetAllKeys().Count());
             Assert.AreEqual(sourceData.Ident, restoredData.Ident);
             Assert.AreEqual(sourceData.GetType(), restoredData.GetType());
         }
 
-        public void ClearStorage(IDataStorage storage)
+        public void ClearStorage()
         {
-            storage.Clear();
-            storage.SaveData("Test1", Guid.NewGuid());
-            storage.SaveData("Test2", Guid.NewGuid());
-            storage.SaveData("Test3", Guid.NewGuid());
+            _dataStorage.Clear();
+            _dataStorage.SaveData("Test1", new TestData());
+            _dataStorage.SaveData("Test2", new TestData());
+            _dataStorage.SaveData("Test3", new TestData());
 
-            Assert.AreEqual(3, storage.GetAllKeys().Count());
-            storage.Clear();
-            Assert.AreEqual(0, storage.GetAllKeys().Count());
+            Assert.AreEqual(3, _dataStorage.GetAllKeys().Count());
+            _dataStorage.Clear();
+            Assert.AreEqual(0, _dataStorage.GetAllKeys().Count());
         }
 
-        public DataStorageTester(string testPath)
+        public DataStorageTester(IDataStorage dataStorage, string testPath)
         {
             _path = testPath;
+            _dataStorage = dataStorage;
         }
     }
 }

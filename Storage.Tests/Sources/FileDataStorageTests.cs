@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using Depra.Data.Storage.Api;
+using Depra.Data.Storage.Impl;
 using Depra.Data.Storage.IO;
+using Depra.Data.Storage.Serialization;
 
 namespace Depra.Data.Storage.Tests
 {
@@ -13,12 +15,19 @@ namespace Depra.Data.Storage.Tests
 
         protected override IDataStorage BuildDataStorage()
         {
+            var serializer = new BinarySerializer();
             var location = new LocalFileLocation(Directory, FileFormat, SearchOption.TopDirectoryOnly);
-            var fileDataStorage = new FileDataStorageBuilder().SetLocation(location).Build();
+            var fileDataStorage = new StandardDataStorageBuilder()
+                .SetLocation(location)
+                .SetLoader(loader => loader
+                    .AddReader(new FileReader<TestData>(serializer)))
+                .SetSaver(saver => saver
+                    .AddWriter(new FileWriter<TestData>(serializer)))
+                .Build();
 
             return fileDataStorage;
         }
 
-        protected override DataStorageTester CreateTestClass() => new DataStorageTester(DataUri);
+        protected override DataStorageTester CreateTestClass(IDataStorage dataStorage) => new(dataStorage, DataUri);
     }
 }

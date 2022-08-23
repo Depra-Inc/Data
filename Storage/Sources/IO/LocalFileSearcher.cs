@@ -12,6 +12,7 @@ namespace Depra.Data.Storage.IO
             var result = Directory.GetFiles(directoryPath, _searchPattern, _searchOption);
             return result;
         }
+        
         public LocalFileSearcher(string pattern, SearchOption option)
         {
             _searchOption = option;
