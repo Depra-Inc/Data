@@ -10,10 +10,10 @@ namespace Depra.Data.Storage.IO
 
         public TData ReadData(string path)
         {
-            using (var stream = File.Open(path, FileMode.Open))
+            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
             {
-                var result = _serializer.Deserialize(stream);
-                return (TData)result;
+                var deserializedData = _serializer.Deserialize(stream);
+                return (TData)deserializedData;
             }
         }
 

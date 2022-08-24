@@ -6,7 +6,7 @@ namespace Depra.Data.Storage.Tests
 {
     internal class CacheDataStorageTests : DataStorageTestRunner
     {
-        private const string DataUri = "Cache";
+        protected override string[] FreeDataNames { get; } = { "Cache_1", "Cache_2", "Cache_3" };
 
         protected override IDataStorage BuildDataStorage()
         {
@@ -20,6 +20,6 @@ namespace Depra.Data.Storage.Tests
             return storage;
         }
 
-        protected override DataStorageTester CreateTestClass(IDataStorage dataStorage) => new(dataStorage, DataUri);
+        protected override void CreateResourcesForTest() => WarmUpData(ExistedDataNames);
     }
 }

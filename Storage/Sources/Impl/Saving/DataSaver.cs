@@ -1,5 +1,4 @@
-﻿using System;
-using Depra.Data.Storage.Api;
+﻿using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Api.Saving;
 using Depra.Data.Storage.Api.Writing;
 using Depra.Data.Storage.Internal.Exceptions;
@@ -13,15 +12,13 @@ namespace Depra.Data.Storage.Impl.Saving
 
         public void SaveData<TData>(string name, TData data)
         {
+            if (TryResolveDataWriter<TData>(out var writer) == false)
+            {
+                throw new NotSupportedTypeException(typeof(TData));
+            }
+
             var fullPath = _location.CombineFullFilePath(name);
-            if (TryResolveDataWriter<TData>(out var writer))
-            {
-                writer.WriteData(fullPath, data);
-            }
-            else
-            {
-                throw new ArgumentException();
-            }
+            writer.WriteData(fullPath, data);
         }
 
         public void RemoveData(string name)

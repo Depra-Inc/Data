@@ -10,7 +10,7 @@ namespace Depra.Data.Storage.IO
 
         public void WriteData(string path, TData data)
         {
-            using (var stream = File.Open(path, FileMode.OpenOrCreate))
+            using (var stream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 _serializer.Serialize(data, stream);
             }

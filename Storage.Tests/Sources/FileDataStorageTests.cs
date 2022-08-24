@@ -4,19 +4,22 @@ using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Impl;
 using Depra.Data.Storage.IO;
 using Depra.Data.Storage.Serialization;
+using NUnit.Framework;
 
 namespace Depra.Data.Storage.Tests
 {
     internal class FileDataStorageTests : DataStorageTestRunner
     {
         private const string FileFormat = ".test";
-        private const string DataUri = nameof(FileDataStorageTests);
-        private static readonly string Directory = Path.Combine(Environment.CurrentDirectory, "Storage.IO.Tests");
+        private const string FolderName = "Storage.IO.Tests";
+        private static readonly string DirectoryPath = Path.Combine(Environment.CurrentDirectory, FolderName);
+
+        protected override string[] FreeDataNames { get; } = { "FileData_1", "FileData_2", "FileData_3" };
 
         protected override IDataStorage BuildDataStorage()
         {
             var serializer = new BinarySerializer();
-            var location = new LocalFileLocation(Directory, FileFormat, SearchOption.TopDirectoryOnly);
+            var location = new LocalFileLocation(DirectoryPath, FileFormat, SearchOption.TopDirectoryOnly);
             var fileDataStorage = new StandardDataStorageBuilder()
                 .SetLocation(location)
                 .SetLoader(loader => loader
@@ -28,6 +31,32 @@ namespace Depra.Data.Storage.Tests
             return fileDataStorage;
         }
 
-        protected override DataStorageTester CreateTestClass(IDataStorage dataStorage) => new(dataStorage, DataUri);
+        protected override void SpecificDataExistenceCheck(string dataName)
+        {
+            var fullDataPath = CombineFullPath(dataName);
+            var isFileExisting = File.Exists(fullDataPath);
+            
+            Assert.IsTrue(isFileExisting);
+        }
+
+        protected override void CreateResourcesForTest()
+        {
+            foreach (var existedFileName in Directory.GetFiles(DirectoryPath))
+            {
+                File.Delete(existedFileName);
+            }
+            
+            WarmUpData(ExistedDataNames);
+        }
+
+        protected override void FreeResources()
+        {
+            foreach (var existedDataName in ExistedDataNames)
+            {
+                File.Delete(existedDataName);
+            }
+        }
+        
+        private static string CombineFullPath(string dataName) => Path.Combine(DirectoryPath, dataName) + FileFormat;
     }
 }
