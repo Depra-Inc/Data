@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Depra.Data.Serialization.Api;
 using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Api.Writing;
 

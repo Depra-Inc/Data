@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Serialization\Serialization.csproj" />
       <ProjectReference Include="..\Storage\Storage.csproj" />
     </ItemGroup>
 

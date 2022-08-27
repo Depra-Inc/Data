@@ -18,4 +18,8 @@
       <Folder Include="Sources\Caching" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Serialization\Serialization.csproj" />
+    </ItemGroup>
+
 </Project>

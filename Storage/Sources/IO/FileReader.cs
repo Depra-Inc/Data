@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Depra.Data.Storage.Api;
+using Depra.Data.Serialization.Api;
 using Depra.Data.Storage.Api.Reading;
 
 namespace Depra.Data.Storage.IO
@@ -12,7 +12,7 @@ namespace Depra.Data.Storage.IO
         {
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
             {
-                var deserializedData = _serializer.Deserialize(stream);
+                var deserializedData = _serializer.Deserialize<TData>(stream);
                 return (TData)deserializedData;
             }
         }

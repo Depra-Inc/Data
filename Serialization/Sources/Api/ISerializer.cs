@@ -1,6 +1,7 @@
+using System;
 using System.IO;
 
-namespace Depra.Data.Storage.Api
+namespace Depra.Data.Serialization.Api
 {
     /// <summary>
     /// Interface for all serializers for saving/restoring data.
@@ -15,6 +16,6 @@ namespace Depra.Data.Storage.Api
         /// <summary>
         /// Deserialize the specified object from stream using the encoding.
         /// </summary>
-        object Deserialize(Stream stream);
+        T Deserialize<T>(Stream stream);
     }
 }

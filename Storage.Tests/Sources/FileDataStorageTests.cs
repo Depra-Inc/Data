@@ -1,9 +1,9 @@
 using System;
 using System.IO;
+using Depra.Data.Serialization.Impl;
 using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Impl;
 using Depra.Data.Storage.IO;
-using Depra.Data.Storage.Serialization;
 using NUnit.Framework;
 
 namespace Depra.Data.Storage.Tests
@@ -19,9 +19,8 @@ namespace Depra.Data.Storage.Tests
         protected override IDataStorage BuildDataStorage()
         {
             var serializer = new BinarySerializer();
-            var location = new LocalFileLocation(DirectoryPath, FileFormat, SearchOption.TopDirectoryOnly);
             var fileDataStorage = new StandardDataStorageBuilder()
-                .SetLocation(location)
+                .SetLocation(new LocalFileLocation(DirectoryPath, FileFormat, SearchOption.TopDirectoryOnly))
                 .SetLoader(loader => loader
                     .AddReader(new FileReader<TestData>(serializer)))
                 .SetSaver(saver => saver
@@ -35,7 +34,7 @@ namespace Depra.Data.Storage.Tests
         {
             var fullDataPath = CombineFullPath(dataName);
             var isFileExisting = File.Exists(fullDataPath);
-            
+
             Assert.IsTrue(isFileExisting);
         }
 
@@ -45,7 +44,7 @@ namespace Depra.Data.Storage.Tests
             {
                 File.Delete(existedFileName);
             }
-            
+
             WarmUpData(ExistedDataNames);
         }
 
@@ -56,7 +55,7 @@ namespace Depra.Data.Storage.Tests
                 File.Delete(existedDataName);
             }
         }
-        
+
         private static string CombineFullPath(string dataName) => Path.Combine(DirectoryPath, dataName) + FileFormat;
     }
 }
