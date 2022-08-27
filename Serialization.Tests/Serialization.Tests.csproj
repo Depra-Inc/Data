@@ -2,9 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+
         <IsPackable>false</IsPackable>
-        <AssemblyName>Depra.Data.Storage.Caching.Tests</AssemblyName>
-        <RootNamespace>Depra.Data.Storage.Caching.Tests</RootNamespace>
+
+        <AssemblyName>Depra.Data.Serialization.Tests</AssemblyName>
+
+        <RootNamespace>Depra.Data.Serialization.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,9 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Storage.Tests\Storage.Tests.csproj" />
-      <ProjectReference Include="..\Storage\Storage.csproj" />
-      <ProjectReference Include="..\Storage.Caching\Storage.Caching.csproj" />
+      <ProjectReference Include="..\Serialization.Json.Newtonsoft\Serialization.Json.Newtonsoft.csproj" />
+      <ProjectReference Include="..\Serialization.Json\Serialization.Json.csproj" />
+      <ProjectReference Include="..\Serialization\Serialization.csproj" />
     </ItemGroup>
 
 </Project>
