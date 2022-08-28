@@ -46,8 +46,6 @@ namespace Depra.Data.Storage.Tests
             {
                 File.Delete(existedFileName);
             }
-
-            WarmUpData(ExistedDataNames);
         }
 
         protected override void FreeResources()

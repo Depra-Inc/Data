@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Internal.Exceptions;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Depra.Data.Storage.Tests
@@ -20,6 +22,7 @@ namespace Depra.Data.Storage.Tests
         {
             _dataStorage = BuildDataStorage();
             CreateResourcesForTest();
+            WarmUpData(ExistedDataNames);
         }
 
         [TearDown]
@@ -30,88 +33,125 @@ namespace Depra.Data.Storage.Tests
         }
 
         [Test]
-        public void Save_New_Data()
+        public void WhenSavingData_AndStorageContainKey_ThenSuccess()
         {
+            // Arrange.
+            var randomExistedDataName = ExistedDataNames.Random();
+
+            // Act.
+            SaveDataInternal(randomExistedDataName, Handler);
+
+            // Assert.
+            void Handler(bool saved)
+            {
+                saved.Should().BeTrue();
+                SpecificDataExistenceCheck(randomExistedDataName);
+            }
+        }
+
+        [Test]
+        public void WhenSavingData_AndStorageDoesntContainKey_ThenThrowError()
+        {
+            // Arrange.
             var randomNonExistedDataName = FreeDataNames.Random();
-            SaveData(randomNonExistedDataName);
 
-            var isStorageContainsSavedData = _dataStorage.GetAllKeys().Contains(randomNonExistedDataName);
-            Assert.IsTrue(isStorageContainsSavedData);
+            // Act.
+            SaveDataInternal(randomNonExistedDataName, Handler);
 
-            SpecificDataExistenceCheck(randomNonExistedDataName);
+            // Assert.
+            void Handler(bool saved)
+            {
+                saved.Should().BeTrue();
+                SpecificDataExistenceCheck(randomNonExistedDataName);
+            }
         }
 
         [Test]
-        public void Save_Existing_Data()
+        public void WhenLoadingData_AndStorageContainKey_ThenSuccess()
         {
+            // Arrange.
             var randomExistingDataName = ExistedDataNames.Random();
-            SaveData(randomExistingDataName);
 
-            var isStorageContainsSavedData = _dataStorage.GetAllKeys().Contains(randomExistingDataName);
-            Assert.IsTrue(isStorageContainsSavedData);
-
-            SpecificDataExistenceCheck(randomExistingDataName);
-        }
-
-        [Test]
-        public void Load_Existing_Data()
-        {
-            var randomExistingDataName = ExistedDataNames.Random();
+            // Act.
             var restoredData = _dataStorage.LoadData(randomExistingDataName, TestData.Empty);
 
-            Assert.AreNotEqual(null, restoredData);
+            // Assert.
+            restoredData.Should().NotBeNull();
         }
 
         [Test]
-        public void Load_Non_Existent_Data()
+        public void WhenLoadingData_AndStorageDoesntContainKey_ThenGetDefault()
         {
+            // Arrange.
             var randomNonExistedDataName = FreeDataNames.Random();
+
+            // Act.
             var restoredData = _dataStorage.LoadData(randomNonExistedDataName, TestData.Empty);
 
-            Assert.AreEqual(TestData.Empty, restoredData);
+            // Assert.
+            restoredData.Should().Be(TestData.Empty);
         }
 
         [Test]
-        public void Delete_Existent_Data()
+        public void WhenDeletingData_AndStorageContainKey_ThenStorageDoesntContainKey()
         {
+            // Arrange.
             var randomExistedDataName = ExistedDataNames.Random();
-            _dataStorage.DeleteData(randomExistedDataName);
             
-            Assert.IsFalse(_dataStorage.GetAllKeys().Contains(randomExistedDataName));
+            // Act.
+            _dataStorage.DeleteData(randomExistedDataName);
+
+            // Assert.
+            _dataStorage.GetAllKeys().Should().NotContain(randomExistedDataName);
         }
 
         [Test]
-        public void Clear_Storage()
+        public void WhenClearStorage_AndStorageNonEmpty_ThenStorageEmpty()
         {
-            var existingDataCount = _dataStorage.GetAllKeys().Count();
+            // Act.
             WarmUpData(FreeDataNames);
-
-            var expectedCount = existingDataCount + FreeDataNames.Length;
-            Assert.AreEqual(expectedCount, _dataStorage.GetAllKeys().Count());
-
+            
+            // Assert.
             _dataStorage.Clear();
-
-            Assert.AreEqual(0, _dataStorage.GetAllKeys().Count());
+            _dataStorage.GetAllKeys().Should().BeEmpty();
         }
 
         [Test]
-        public void Error_Saving_Not_Supported_Type()
+        public void WhenSavingType_AndTypeNonSupportedByStorage_ThenThrowError()
         {
-            void SavingHandler() => _dataStorage.SaveData(FreeDataNames.Random(), "stringData");
+            // Arrange.
+            const string data = "stringData";
+            
+            // Act.
+            void SavingHandler() => _dataStorage.SaveData(FreeDataNames.Random(), data);
+            
+            // Assert.
             Assert.Throws<NotSupportedTypeException>(SavingHandler);
         }
 
         [Test]
-        public void Error_Loading_Not_Supported_Type()
+        public void WhenLoadingType_AndTypeNonSupportedByStorage_ThenThrowError()
         {
-            void LoadingHandler() => _dataStorage.LoadData(FreeDataNames.Random(), "stringData");
+            // Arrange.
+            const string data = "stringData";   
+            
+            // Act.
+            void LoadingHandler() => _dataStorage.LoadData(FreeDataNames.Random(), data);
+            
+            // Assert.
             Assert.Throws<NotSupportedTypeException>(LoadingHandler);
         }
 
         [Test]
-        public void Error_Deleting_Non_Existent_Data()
+        public void WhenDeletingData_AndStorageDoesntContainData_ThenThrowError()
         {
-            void RemovingHandler() => _dataStorage.DeleteData("Non-existent data");
+            // Arrange.
+            const string dataKey = "Non-existent data";
+            
+            // Act.
+            void RemovingHandler() => _dataStorage.DeleteData(dataKey);
+            
+            // Assert.
             Assert.Throws<InvalidPathException>(RemovingHandler);
         }
 
@@ -129,7 +169,7 @@ namespace Depra.Data.Storage.Tests
         {
         }
 
-        protected void WarmUpData(IEnumerable<string> dataNames)
+        private void WarmUpData(IEnumerable<string> dataNames)
         {
             foreach (var dataName in dataNames)
             {
@@ -137,10 +177,11 @@ namespace Depra.Data.Storage.Tests
             }
         }
 
-        private void SaveData(string dataName)
+        private void SaveDataInternal(string dataName, Action<bool> saving)
         {
-            var sourceData = new TestData();
-            _dataStorage.SaveData(dataName, sourceData);
+            _dataStorage.SaveData(dataName, new TestData());
+            var isStorageContainsSavedData = _dataStorage.GetAllKeys().Contains(dataName);
+            saving?.Invoke(isStorageContainsSavedData);
         }
     }
 }

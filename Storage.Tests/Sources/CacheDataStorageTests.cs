@@ -19,7 +19,5 @@ namespace Depra.Data.Storage.Tests
 
             return storage;
         }
-
-        protected override void CreateResourcesForTest() => WarmUpData(ExistedDataNames);
     }
 }
