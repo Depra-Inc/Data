@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Json;
-using Depra.Data.Serialization.Api;
 using Depra.Data.Serialization.Json.Api;
 
 namespace Depra.Data.Serialization.Json.Impl
 {
-    public class DataContractJsonSerializerProvider : IJsonSerializerProvider
+    public class DataContractJsonSerializerAdapter : IJsonSerializerAdapter
     {
         public void Serialize(Stream stream, object obj)
         {
@@ -25,5 +24,7 @@ namespace Depra.Data.Serialization.Json.Impl
 
         private static DataContractJsonSerializer CreateSerializer(Type objectType) =>
             new DataContractJsonSerializer(objectType);
+
+        public override string ToString() => "DcJsonSerializer";
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Depra.Data.Serialization.Impl;
+using Depra.Data.Serialization.Binary;
 using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Impl;
 using Depra.Data.Storage.IO;

@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serializat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Tests", "Serialization.Tests\Serialization.Tests.csproj", "{3C45D8DA-6971-4CF7-A0A7-09697DC1CF03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json", "Serialization.Json\Serialization.Json.csproj", "{B33B644B-271A-436E-A650-A2C899A306E2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Newtonsoft", "Serialization.Json.Newtonsoft\Serialization.Json.Newtonsoft.csproj", "{2A9FB60A-0A95-4F72-A5C5-AEAE67FC9A5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Benchmark", "Serialization.Benchmark\Serialization.Benchmark.csproj", "{A6FDDEBC-8CB1-4EDE-A608-CD6943E1A3CB}"
@@ -60,10 +58,6 @@ Global
 		{3C45D8DA-6971-4CF7-A0A7-09697DC1CF03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C45D8DA-6971-4CF7-A0A7-09697DC1CF03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C45D8DA-6971-4CF7-A0A7-09697DC1CF03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B33B644B-271A-436E-A650-A2C899A306E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B33B644B-271A-436E-A650-A2C899A306E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B33B644B-271A-436E-A650-A2C899A306E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B33B644B-271A-436E-A650-A2C899A306E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A9FB60A-0A95-4F72-A5C5-AEAE67FC9A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A9FB60A-0A95-4F72-A5C5-AEAE67FC9A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A9FB60A-0A95-4F72-A5C5-AEAE67FC9A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU

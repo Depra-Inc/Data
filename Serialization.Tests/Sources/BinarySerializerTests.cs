@@ -1,5 +1,5 @@
 ﻿using Depra.Data.Serialization.Api;
-using Depra.Data.Serialization.Impl;
+using Depra.Data.Serialization.Binary;
 
 namespace Depra.Data.Serialization.Tests.Sources
 {

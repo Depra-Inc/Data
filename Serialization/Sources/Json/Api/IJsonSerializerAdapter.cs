@@ -2,7 +2,7 @@
 
 namespace Depra.Data.Serialization.Json.Api
 {
-    public interface IJsonSerializerProvider
+    public interface IJsonSerializerAdapter
     {
         void Serialize(Stream stream, object obj);
 

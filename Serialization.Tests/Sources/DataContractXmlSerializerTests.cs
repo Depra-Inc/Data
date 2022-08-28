@@ -3,11 +3,11 @@ using Depra.Data.Serialization.Xml.Impl;
 
 namespace Depra.Data.Serialization.Tests.Sources
 {
-    internal class XmlSerializerTests : SerializerTestsBase
+    internal class DataContractXmlSerializerTests : SerializerTestsBase
     {
         protected override ISerializer CreateSerializer()
         {
-            var adapter = new StandardXmlSerializerAdapter();
+            var adapter = new DataContractSerializerAdapter();
             var serializer = new XmlSerializer(adapter);
 
             return serializer;

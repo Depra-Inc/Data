@@ -9,7 +9,7 @@ namespace Depra.Data.Serialization.Tests.Sources
         protected override ISerializer CreateSerializer()
         {
             var newtonsoftSerializer = new Newtonsoft.Json.JsonSerializer();
-            var serializerProvider = new NewtonsoftJsonSerializerProvider(newtonsoftSerializer);
+            var serializerProvider = new NewtonsoftJsonSerializerAdapter(newtonsoftSerializer);
             return new JsonSerializer(serializerProvider);
         }
     }

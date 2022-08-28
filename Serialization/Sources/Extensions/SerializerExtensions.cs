@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Depra.Data.Serialization.Api;
 
 namespace Depra.Data.Serialization.Extensions

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Depra.Data.Serialization.Api;
 
-namespace Depra.Data.Serialization.Impl
+namespace Depra.Data.Serialization.Binary
 {
     [Obsolete]
     public class BinarySerializer : ISerializer, IAsyncSerializer
@@ -48,5 +48,7 @@ namespace Depra.Data.Serialization.Impl
         {
             _binaryFormatter = new BinaryFormatter();
         }
+
+        public override string ToString() => nameof(BinaryFormatter);
     }
 }
