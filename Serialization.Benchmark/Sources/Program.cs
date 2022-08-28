@@ -12,7 +12,7 @@ namespace Depra.Data.Serialization.Benchmark
         {
             BenchmarkRunner.Run(typeof(Program).Assembly, DefaultConfig.Instance
                 .AddValidator(JitOptimizationsValidator.FailOnError)
-                .AddJob(Job.Dry.WithToolchain(InProcessEmitToolchain.Instance)));
+                .AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance)));
         }
     }
 }
