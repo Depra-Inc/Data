@@ -1,22 +1,31 @@
 ﻿using System.IO;
 using Depra.Data.Serialization.Api;
+using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Api.Reading;
 
 namespace Depra.Data.Storage.IO
 {
-    public readonly struct FileReader<TData> : ITypedDataReader<TData>
+    public class FileReader<TData> : IDataReader<TData>
     {
         private readonly ISerializer _serializer;
+        private readonly ILocationProvider _location;
 
-        public TData ReadData(string path)
+        public bool CanRead(string dataName) => _location.ContainsDataByName(dataName);
+
+        public TData ReadData(string dataName)
         {
-            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
+            var fullPath = _location.CombineFullFilePath(dataName);
+            using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read))
             {
                 var deserializedData = _serializer.Deserialize<TData>(stream);
-                return (TData)deserializedData;
+                return deserializedData;
             }
         }
 
-        public FileReader(ISerializer serializer) => _serializer = serializer;
+        public FileReader(ILocationProvider location, ISerializer serializer)
+        {
+            _location = location;
+            _serializer = serializer;
+        }
     }
 }

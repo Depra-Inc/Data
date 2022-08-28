@@ -1,5 +1,4 @@
 ﻿using System;
-using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Api.Saving;
 using Depra.Data.Storage.Api.Writing;
 
@@ -7,24 +6,27 @@ namespace Depra.Data.Storage.Impl.Saving
 {
     public class StandardDataSaverBuilder : IDataSaverBuilder
     {
-        private readonly DataWriterByType _dataWriters;
+        private IDataSaver _dataSaver;
 
-        public IDataSaverBuilder AddWriter<TData>(ITypedDataWriter<TData> writer)
+        public static StandardDataSaverBuilder Configure(Action<IDataSaverBuilder> configureAction)
         {
-            if (_dataWriters.GetValue<TData>() != null)
+            var builder = new StandardDataSaverBuilder()
             {
-                throw new ArgumentException();
-            }
-
-            _dataWriters.SetValue(writer);
-            return this;
+                _dataSaver = new DataSaver(new DataWriterByType())
+            };
+            configureAction?.Invoke(builder);
+            return builder;
         }
 
-        public IDataSaver BuildFor(ILocationProvider location) => new DataSaver(location, _dataWriters);
+        public IDataSaver Build() => _dataSaver;
 
-        public StandardDataSaverBuilder()
+        public IDataSaverBuilder AddWriter<TData>(IDataWriter<TData> writer) =>
+            With(builder => builder.AddWriter(writer));
+
+        private IDataSaverBuilder With(Action<IDataSaver> configure)
         {
-            _dataWriters = new DataWriterByType();
+            configure?.Invoke(_dataSaver);
+            return this;
         }
     }
 }

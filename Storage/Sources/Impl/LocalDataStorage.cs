@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Depra.Data.Storage.Api;
+using Depra.Data.Storage.Api.Cleaning;
 using Depra.Data.Storage.Api.Loading;
 using Depra.Data.Storage.Api.Saving;
 
@@ -9,6 +10,7 @@ namespace Depra.Data.Storage.Impl
     {
         private readonly IDataSaver _dataSaver;
         private readonly IDataLoader _dataLoader;
+        private readonly IDataCleaner _dataCleaner;
         private readonly ILocationProvider _location;
 
         public IEnumerable<string> GetAllKeys() => _location.ScanFilenames();
@@ -17,22 +19,16 @@ namespace Depra.Data.Storage.Impl
         
         public TData LoadData<TData>(string name, TData defaultValue) => _dataLoader.LoadData(name, defaultValue);
 
-        public void RemoveData(string name) => _dataSaver.RemoveData(name);
+        public void DeleteData(string name) => _dataCleaner.DeleteData(name);
 
-        public void Clear()
-        {
-            var allKeys = _location.ScanFilenames();
-            foreach (var key in allKeys)
-            {
-                RemoveData(key);
-            }
-        }
+        public void Clear() => _dataCleaner.Clear();
 
         public LocalDataStorage(ILocationProvider location, IDataSaver saver, IDataLoader loader)
         {
             _dataSaver = saver;
             _dataLoader = loader;
             _location = location;
+            _dataCleaner = new DataCleaner(location);
         }
     }
 }

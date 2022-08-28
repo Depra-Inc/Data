@@ -1,6 +1,5 @@
 ﻿using System;
 using Depra.Data.Storage.Api;
-using Depra.Data.Storage.Api.Builders;
 using Depra.Data.Storage.Api.Loading;
 using Depra.Data.Storage.Api.Saving;
 using Depra.Data.Storage.Impl.Loading;
@@ -12,47 +11,41 @@ namespace Depra.Data.Storage.Impl
     {
         private IDataSaver _saver;
         private IDataLoader _loader;
-        private ILocationProvider _location;
+        private  IDataStorage _dataStorage;
 
-        public IDataStorageBuilder SetLocation(ILocationProvider locationProvider)
+        public static IDataStorageBuilder Configure(ILocationProvider location, Action<IDataStorageBuilder> configure)
         {
-            _location = locationProvider;
-            return this;
-        }
-
-        public IDataStorageBuilder SetLoader(Action<IDataLoaderBuilder> configure)
-        {
-            var builder = new StandardDataLoaderBuilder();
-            configure(builder);
-            _loader = builder.BuildFor(_location);
-
-            return this;
-        }
-
-        public IDataStorageBuilder SetSaver(Action<IDataSaverBuilder> configure)
-        {
-            var builder = new StandardDataSaverBuilder();
-            configure(builder);
-            _saver = builder.BuildFor(_location);
-
-            return this;
+            var builder = new StandardDataStorageBuilder();
+            configure?.Invoke(builder);
+            builder._dataStorage = new LocalDataStorage(location, builder._saver, builder._loader);
+            
+            return builder;
         }
 
         public IDataStorage Build()
         {
             Validate();
-            var storage = new LocalDataStorage(_location, _saver, _loader);
-            
-            return storage;
+            return _dataStorage;
+        }
+
+        public IDataStorageBuilder AddLoader(Action<IDataLoaderBuilder> configureLoader)
+        {
+            _loader = StandardDataLoaderBuilder.Configure(configureLoader).Build();
+            return this;
+        }
+
+        public IDataStorageBuilder AddSaver(Action<IDataSaverBuilder> configureSaver)
+        {
+            _saver = StandardDataSaverBuilder.Configure(configureSaver).Build();
+            return this;
+        }
+
+        private StandardDataStorageBuilder()
+        {
         }
 
         private void Validate()
         {
-            if (_location == null)
-            {
-                throw new NullReferenceException("Required data location not set!");
-            }
-
             if (_loader == null)
             {
                 throw new NullReferenceException("Required data loader not set!");

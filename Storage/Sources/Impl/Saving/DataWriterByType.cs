@@ -7,15 +7,15 @@ namespace Depra.Data.Storage.Impl.Saving
     {
         private static class Storage<T>
         {
-            private static readonly ConditionalWeakTable<DataWriterByType, ITypedDataWriter<T>> Table;
+            private static readonly ConditionalWeakTable<DataWriterByType, IDataWriter<T>> Table;
 
-            public static ITypedDataWriter<T> GetValue(DataWriterByType fieldByType)
+            public static IDataWriter<T> GetValue(DataWriterByType fieldByType)
             {
                 Table.TryGetValue(fieldByType, out var result);
                 return result;
             }
 
-            public static void SetValue(DataWriterByType fieldByType, ITypedDataWriter<T> value)
+            public static void SetValue(DataWriterByType fieldByType, IDataWriter<T> value)
             {
                 Table.Remove(fieldByType);
                 Table.Add(fieldByType, value);
@@ -23,12 +23,12 @@ namespace Depra.Data.Storage.Impl.Saving
 
             static Storage()
             {
-                Table = new ConditionalWeakTable<DataWriterByType, ITypedDataWriter<T>>();
+                Table = new ConditionalWeakTable<DataWriterByType, IDataWriter<T>>();
             }
         }
 
-        public ITypedDataWriter<T> GetValue<T>() => Storage<T>.GetValue(this);
+        public IDataWriter<T> GetValue<T>() => Storage<T>.GetValue(this);
 
-        public void SetValue<T>(ITypedDataWriter<T> value) => Storage<T>.SetValue(this, value);
+        public void SetValue<T>(IDataWriter<T> value) => Storage<T>.SetValue(this, value);
     }
 }

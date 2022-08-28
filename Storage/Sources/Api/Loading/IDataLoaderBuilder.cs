@@ -4,8 +4,8 @@ namespace Depra.Data.Storage.Api.Loading
 {
     public interface IDataLoaderBuilder
     {
-        IDataLoaderBuilder AddReader<TData>(ITypedDataReader<TData> reader);
+        IDataLoader Build();
 
-        IDataLoader BuildFor(ILocationProvider location);
+        IDataLoaderBuilder AddReader<TData>(IDataReader<TData> reader);
     }
 }

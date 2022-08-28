@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Depra.Data.Storage.Tests
 {
     [TestFixture]
-    internal abstract class DataStorageTestRunner
+    internal abstract class DataStorageTestsBase
     {
         protected static readonly string[] ExistedDataNames = { "ExistedData_1", "ExistedData_2", "ExistedData_3" };
 
@@ -72,6 +72,15 @@ namespace Depra.Data.Storage.Tests
         }
 
         [Test]
+        public void Delete_Existent_Data()
+        {
+            var randomExistedDataName = ExistedDataNames.Random();
+            _dataStorage.DeleteData(randomExistedDataName);
+            
+            Assert.IsFalse(_dataStorage.GetAllKeys().Contains(randomExistedDataName));
+        }
+
+        [Test]
         public void Clear_Storage()
         {
             var existingDataCount = _dataStorage.GetAllKeys().Count();
@@ -102,7 +111,7 @@ namespace Depra.Data.Storage.Tests
         [Test]
         public void Error_Deleting_Non_Existent_Data()
         {
-            void RemovingHandler() => _dataStorage.RemoveData("Non-existent data");
+            void RemovingHandler() => _dataStorage.DeleteData("Non-existent data");
             Assert.Throws<InvalidPathException>(RemovingHandler);
         }
 

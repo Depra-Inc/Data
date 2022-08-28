@@ -4,8 +4,8 @@ namespace Depra.Data.Storage.Api.Saving
 {
     public interface IDataSaverBuilder
     {
-        IDataSaverBuilder AddWriter<TData>(ITypedDataWriter<TData> writer);
-
-        IDataSaver BuildFor(ILocationProvider location);
+        IDataSaver Build();
+        
+        IDataSaverBuilder AddWriter<TData>(IDataWriter<TData> writer);
     }
 }

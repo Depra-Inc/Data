@@ -1,4 +1,9 @@
-﻿using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Order;
+using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
+using BenchmarkDotNet.Validators;
 
 namespace Depra.Data.Storage.Benchmark
 {
@@ -6,7 +11,10 @@ namespace Depra.Data.Storage.Benchmark
     {
         private static void Main(string[] args)
         {
-            BenchmarkRunner.Run<DataStorageBenchmark>();
+            BenchmarkRunner.Run(typeof(Program).Assembly, DefaultConfig.Instance
+                .AddValidator(JitOptimizationsValidator.FailOnError)
+                .AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance))
+                .WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest)));
         }
     }
 }

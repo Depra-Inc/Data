@@ -8,23 +8,25 @@ using NUnit.Framework;
 
 namespace Depra.Data.Storage.Tests
 {
-    internal class FileDataStorageTests : DataStorageTestRunner
+    internal class FileDataStorageTests : DataStorageTestsBase
     {
         private const string FileFormat = ".test";
         private const string FolderName = "Storage.IO.Tests";
+
         private static readonly string DirectoryPath = Path.Combine(Environment.CurrentDirectory, FolderName);
+
+        private static readonly ILocationProvider Location =
+            new LocalFileLocation(DirectoryPath, FileFormat, SearchOption.TopDirectoryOnly);
 
         protected override string[] FreeDataNames { get; } = { "FileData_1", "FileData_2", "FileData_3" };
 
         protected override IDataStorage BuildDataStorage()
         {
             var serializer = new BinarySerializer();
-            var fileDataStorage = new StandardDataStorageBuilder()
-                .SetLocation(new LocalFileLocation(DirectoryPath, FileFormat, SearchOption.TopDirectoryOnly))
-                .SetLoader(loader => loader
-                    .AddReader(new FileReader<TestData>(serializer)))
-                .SetSaver(saver => saver
-                    .AddWriter(new FileWriter<TestData>(serializer)))
+            var fileDataStorage = StandardDataStorageBuilder
+                .Configure(Location, builder => builder
+                    .AddLoader(loader => loader.AddReader(new FileReader<TestData>(Location, serializer)))
+                    .AddSaver(saver => saver.AddWriter(new FileWriter<TestData>(Location, serializer))))
                 .Build();
 
             return fileDataStorage;

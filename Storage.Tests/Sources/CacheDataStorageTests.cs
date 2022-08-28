@@ -4,17 +4,17 @@ using Depra.Data.Storage.Impl;
 
 namespace Depra.Data.Storage.Tests
 {
-    internal class CacheDataStorageTests : DataStorageTestRunner
+    internal class CacheDataStorageTests : DataStorageTestsBase
     {
         protected override string[] FreeDataNames { get; } = { "Cache_1", "Cache_2", "Cache_3" };
 
         protected override IDataStorage BuildDataStorage()
         {
             var cache = new ThreadSafeCacheDictionary();
-            var storage = new StandardDataStorageBuilder()
-                .SetLocation(new CacheLocation(cache))
-                .SetSaver(saver => saver.AddWriter(new CacheWriter<TestData>(cache)))
-                .SetLoader(loader => loader.AddReader(new CacheReader<TestData>(cache)))
+            var storage = StandardDataStorageBuilder
+                .Configure(new CacheLocation(cache), builder => builder
+                    .AddSaver(saver => saver.AddWriter(new CacheWriter<TestData>(cache)))
+                    .AddLoader(loader => loader.AddReader(new CacheReader<TestData>(cache))))
                 .Build();
 
             return storage;

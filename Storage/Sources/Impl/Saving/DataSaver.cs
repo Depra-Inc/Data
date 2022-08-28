@@ -1,14 +1,22 @@
-﻿using Depra.Data.Storage.Api;
-using Depra.Data.Storage.Api.Saving;
+﻿using Depra.Data.Storage.Api.Saving;
 using Depra.Data.Storage.Api.Writing;
 using Depra.Data.Storage.Internal.Exceptions;
 
 namespace Depra.Data.Storage.Impl.Saving
 {
-    public readonly struct DataSaver : IDataSaver
+    public class DataSaver : IDataSaver
     {
-        private readonly ILocationProvider _location;
         private readonly DataWriterByType _dataWriters;
+
+        public void AddWriter<TData>(IDataWriter<TData> writer)
+        {
+            if (TryResolveDataWriter<TData>(out var alreadyRegisteredWriter))
+            {
+                throw new AlreadyRegisteredException(alreadyRegisteredWriter.GetType());
+            }
+            
+            _dataWriters.SetValue(writer);
+        }
 
         public void SaveData<TData>(string name, TData data)
         {
@@ -17,27 +25,15 @@ namespace Depra.Data.Storage.Impl.Saving
                 throw new NotSupportedTypeException(typeof(TData));
             }
 
-            var fullPath = _location.CombineFullFilePath(name);
-            writer.WriteData(fullPath, data);
+            writer.WriteData(name, data);
         }
 
-        public void RemoveData(string name)
+        public DataSaver(DataWriterByType writers)
         {
-            if (_location.ContainsDataByName(name) == false)
-            {
-                throw new InvalidPathException(_location.CombineFullFilePath(name));
-            }
-
-            _location.Remove(name);
-        }
-
-        public DataSaver(ILocationProvider location, DataWriterByType writers)
-        {
-            _location = location;
             _dataWriters = writers;
         }
 
-        private bool TryResolveDataWriter<TData>(out ITypedDataWriter<TData> writer)
+        private bool TryResolveDataWriter<TData>(out IDataWriter<TData> writer)
         {
             writer = _dataWriters.GetValue<TData>();
             return writer != null;

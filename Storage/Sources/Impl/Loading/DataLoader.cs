@@ -1,15 +1,22 @@
-﻿using System;
-using Depra.Data.Storage.Api;
-using Depra.Data.Storage.Api.Loading;
+﻿using Depra.Data.Storage.Api.Loading;
 using Depra.Data.Storage.Api.Reading;
 using Depra.Data.Storage.Internal.Exceptions;
 
 namespace Depra.Data.Storage.Impl.Loading
 {
-    public readonly struct DataLoader : IDataLoader
+    public class DataLoader : IDataLoader
     {
-        private readonly ILocationProvider _location;
         private readonly DataReaderByType _dataReaders;
+
+        public void AddReader<TData>(IDataReader<TData> reader)
+        {
+            if (TryResolveDataReader<TData>(out var alreadyRegisteredReader))
+            {
+                throw new AlreadyRegisteredException(alreadyRegisteredReader.GetType());
+            }
+            
+            _dataReaders.SetValue(reader);
+        }
 
         public TData LoadData<TData>(string name, TData defaultValue)
         {
@@ -17,38 +24,32 @@ namespace Depra.Data.Storage.Impl.Loading
             {
                 throw new NotSupportedTypeException(typeof(TData));
             }
-            
-            if (_location.ContainsDataByName(name) == false)
-            {
-                return defaultValue;
-            }
 
-            var data = ReadDataWithReader(dataReader, name, defaultValue);
-            return data;
+            return dataReader.CanRead(name)
+                ? ReadDataWithReader(dataReader, name, defaultValue)
+                : defaultValue;
         }
 
-        public DataLoader(ILocationProvider location, DataReaderByType dataReaders)
+        public DataLoader(DataReaderByType dataReaders)
         {
-            _location = location;
             _dataReaders = dataReaders;
         }
 
-        private TData ReadDataWithReader<TData>(ITypedDataReader<TData> reader, string name, TData defaultValue)
+        private static TData ReadDataWithReader<TData>(IDataReader<TData> reader, string name, TData defaultValue)
         {
-            var fullDataPath = _location.CombineFullFilePath(name);
-            var readData = reader.ReadData(fullDataPath);
+            var readData = reader.ReadData(name);
             if (readData == null)
             {
                 readData = defaultValue;
             }
-            
+
             return readData;
         }
 
-        private bool TryResolveDataReader<TData>(out ITypedDataReader<TData> reader)
+        private bool TryResolveDataReader<TData>(out IDataReader<TData> reader)
         {
-             reader = _dataReaders.GetValue<TData>();
-             return reader != null;
+            reader = _dataReaders.GetValue<TData>();
+            return reader != null;
         }
     }
 }

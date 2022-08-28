@@ -8,7 +8,7 @@ namespace Depra.Data.Storage.Api
         
         TData LoadData<TData>(string name, TData defaultValue);
         
-        void RemoveData(string name);
+        void DeleteData(string name);
 
         void Clear();
         

@@ -7,15 +7,15 @@ namespace Depra.Data.Storage.Impl.Loading
     {
         private static class Storage<T>
         {
-            private static readonly ConditionalWeakTable<DataReaderByType, ITypedDataReader<T>> Table;
+            private static readonly ConditionalWeakTable<DataReaderByType, IDataReader<T>> Table;
 
-            public static ITypedDataReader<T> GetValue(DataReaderByType fieldByType)
+            public static IDataReader<T> GetValue(DataReaderByType fieldByType)
             {
                 Table.TryGetValue(fieldByType, out var result);
                 return result;
             }
 
-            public static void SetValue(DataReaderByType fieldByType, ITypedDataReader<T> value)
+            public static void SetValue(DataReaderByType fieldByType, IDataReader<T> value)
             {
                 Table.Remove(fieldByType);
                 Table.Add(fieldByType, value);
@@ -23,12 +23,18 @@ namespace Depra.Data.Storage.Impl.Loading
 
             static Storage()
             {
-                Table = new ConditionalWeakTable<DataReaderByType, ITypedDataReader<T>>();
+                Table = new ConditionalWeakTable<DataReaderByType, IDataReader<T>>();
             }
         }
-        
-        public ITypedDataReader<T> GetValue<T>() => Storage<T>.GetValue(this);
 
-        public void SetValue<T>(ITypedDataReader<T> value) => Storage<T>.SetValue(this, value);
+        public IDataReader<T> GetValue<T>()
+        {
+            return Storage<T>.GetValue(this);
+        }
+
+        public void SetValue<T>(IDataReader<T> value)
+        {
+            Storage<T>.SetValue(this, value);
+        }
     }
 }

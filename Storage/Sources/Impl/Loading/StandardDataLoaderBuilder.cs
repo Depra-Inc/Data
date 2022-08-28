@@ -1,5 +1,4 @@
 ﻿using System;
-using Depra.Data.Storage.Api;
 using Depra.Data.Storage.Api.Loading;
 using Depra.Data.Storage.Api.Reading;
 
@@ -7,24 +6,27 @@ namespace Depra.Data.Storage.Impl.Loading
 {
     public class StandardDataLoaderBuilder : IDataLoaderBuilder
     {
-        private readonly DataReaderByType _dataReaders;
+        private IDataLoader _dataLoader;
 
-        public IDataLoaderBuilder AddReader<TData>(ITypedDataReader<TData> reader)
+        public static IDataLoaderBuilder Configure(Action<IDataLoaderBuilder> configureAction)
         {
-            if (_dataReaders.GetValue<TData>() != null)
+            var builder = new StandardDataLoaderBuilder
             {
-                throw new ArgumentException();
-            }
-
-            _dataReaders.SetValue(reader);
-            return this;
+                _dataLoader = new DataLoader(new DataReaderByType())
+            };
+            configureAction?.Invoke(builder);
+            return builder;
         }
 
-        public IDataLoader BuildFor(ILocationProvider location) => new DataLoader(location, _dataReaders);
+        public IDataLoader Build() => _dataLoader;
 
-        public StandardDataLoaderBuilder()
+        public IDataLoaderBuilder AddReader<TData>(IDataReader<TData> reader) =>
+            With(builder => builder.AddReader(reader));
+
+        private IDataLoaderBuilder With(Action<IDataLoader> configure)
         {
-            _dataReaders = new DataReaderByType();
+            configure?.Invoke(_dataLoader);
+            return this;
         }
     }
 }

@@ -5,20 +5,23 @@ using Depra.Data.Storage.Api.Writing;
 
 namespace Depra.Data.Storage.IO
 {
-    public readonly struct FileWriter<TData> : ITypedDataWriter<TData>
+    public class FileWriter<TData> : IDataWriter<TData>
     {
         private readonly ISerializer _serializer;
+        private readonly ILocationProvider _location;
 
-        public void WriteData(string path, TData data)
+        public void WriteData(string dataName, TData data)
         {
-            using (var stream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write))
+            var fullPath = _location.CombineFullFilePath(dataName);
+            using (var stream = File.Open(fullPath, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 _serializer.Serialize(data, stream);
             }
         }
 
-        public FileWriter(ISerializer serializer)
+        public FileWriter(ILocationProvider location, ISerializer serializer)
         {
+            _location = location;
             _serializer = serializer;
         }
     }
