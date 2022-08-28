@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Serialization.Json.Newtonsoft.Sources
 {
-    public class NewtonsoftJsonSerializerProvider : IJsonSerializerProvider
+    public class NewtonsoftJsonSerializerAdapter : IJsonSerializerAdapter
     {
         private readonly JsonSerializer _serializer;
         
@@ -31,9 +31,11 @@ namespace Serialization.Json.Newtonsoft.Sources
             }
         }
 
-        public NewtonsoftJsonSerializerProvider(JsonSerializer serializer)
+        public NewtonsoftJsonSerializerAdapter(JsonSerializer serializer)
         {
             _serializer = serializer;
         }
+
+        public override string ToString() => "NS" + nameof(JsonSerializer);
     }
 }
