@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Depra.Data.Serialization.Binary;
 using Depra.Data.Storage.Api;
-using Depra.Data.Storage.Extensions;
 using Depra.Data.Storage.Impl;
 using Depra.Data.Storage.Internal.Exceptions;
 using Depra.Data.Storage.IO;
 using FluentAssertions;
 using NUnit.Framework;
+using static Depra.Data.Storage.Tests.AssertionExtensions;
 
 namespace Depra.Data.Storage.Tests
 {
@@ -21,10 +20,10 @@ namespace Depra.Data.Storage.Tests
 
         private static readonly string[] FreeDataNames = { "FileData_1", "FileData_2", "FileData_3" };
         private static readonly string[] ExistedDataNames = { "ExistedData_1", "ExistedData_2", "ExistedData_3" };
-        private static readonly string DirectoryPath = Path.Combine(Environment.CurrentDirectory, FolderName);
+        private static readonly string DirectoryPath = System.IO.Path.Combine(Environment.CurrentDirectory, FolderName);
 
         private static readonly ILocationProvider Location =
-            new LocalFileLocation(DirectoryPath, FileFormat, SearchOption.TopDirectoryOnly);
+            new LocalFileLocation(DirectoryPath, FileFormat, System.IO.SearchOption.TopDirectoryOnly);
 
         private IDataStorage _fileDataStorage;
 
@@ -32,7 +31,7 @@ namespace Depra.Data.Storage.Tests
         public void SetUp()
         {
             _fileDataStorage = BuildDataStorage();
-            
+
             FreeResources();
             CreateResourcesForTest();
         }
@@ -40,7 +39,7 @@ namespace Depra.Data.Storage.Tests
         [TearDown]
         public void TearDown()
         {
-            //FreeResources();
+            FreeResources();
         }
 
         [Test]
@@ -56,7 +55,7 @@ namespace Depra.Data.Storage.Tests
 
             // Assert.
             _fileDataStorage.GetAllKeys().Should().Contain(randomExistedDataName);
-            File.Exists(fullFilePath).Should().BeTrue();
+            File(fullFilePath).Should().Exist();
         }
 
         [Test]
@@ -72,7 +71,7 @@ namespace Depra.Data.Storage.Tests
 
             // Assert.
             _fileDataStorage.GetAllKeys().Should().Contain(randomNonExistedDataName);
-            File.Exists(fullFilePath).Should().BeTrue();
+            File(fullFilePath).Should().Exist();
         }
 
         [Test]
@@ -100,7 +99,7 @@ namespace Depra.Data.Storage.Tests
             var restoredData = _fileDataStorage.LoadData(randomNonExistedDataName, data);
 
             // Assert.
-            restoredData.Should().Be(TestData.Empty);
+            restoredData.Should().Be(data);
         }
 
         [Test]
@@ -197,7 +196,7 @@ namespace Depra.Data.Storage.Tests
 
             foreach (var fullFilePath in filesForDelete.Select(fileName => Location.CombineFullFilePath(fileName)))
             {
-                File.Delete(fullFilePath);
+                System.IO.File.Delete(fullFilePath);
             }
         }
     }
