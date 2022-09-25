@@ -19,7 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Storage.Caching\Storage.Caching.csproj" />
+      <ProjectReference Include="..\Operations.Cache\Operations.Cache.csproj" />
+      <ProjectReference Include="..\Operations.IO\Operations.IO.csproj" />
       <ProjectReference Include="..\Storage\Storage.csproj" />
     </ItemGroup>
 

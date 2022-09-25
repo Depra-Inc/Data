@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Depra.Data.Operations.IO</AssemblyName>
+        <RootNamespace>Depra.Data.Operations.IO</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Operations\Operations.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Depra.Serialization.Application" Version="0.9.0" />
+    </ItemGroup>
+
+</Project>

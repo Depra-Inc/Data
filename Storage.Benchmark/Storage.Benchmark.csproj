@@ -8,10 +8,11 @@
 
     <ItemGroup>
       <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+      <PackageReference Include="Depra.Serialization.Application" Version="0.9.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Serialization\Serialization.csproj" />
+      <ProjectReference Include="..\Operations.IO\Operations.IO.csproj" />
       <ProjectReference Include="..\Storage\Storage.csproj" />
     </ItemGroup>
 
