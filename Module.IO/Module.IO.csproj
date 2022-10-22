@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>Depra.Data.Module.IO</AssemblyName>
+        <RootNamespace>Depra.Data.Module.IO</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Depra.Serialization.Application" Version="0.9.0" />
+      <PackageReference Include="Depra.Serialization.Infrastructure" Version="0.9.0" />
+    </ItemGroup>
+
+</Project>

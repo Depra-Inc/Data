@@ -2,8 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyName>Depra.Data.Domain</AssemblyName>
-        <RootNamespace>Depra.Data.Domain</RootNamespace>
     </PropertyGroup>
 
 </Project>

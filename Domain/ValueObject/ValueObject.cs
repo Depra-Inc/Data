@@ -3,11 +3,6 @@ using System.Linq;
 
 namespace Domain.ValueObject
 {
-    public interface IValueObject
-    {
-        
-    }
-    
     public abstract class ValueObject
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
@@ -24,20 +19,10 @@ namespace Domain.ValueObject
                 return true;
             }
 
-            return obj.GetType() == GetType() && Equals((ValueObject)obj);
+            return obj.GetType() == GetType() && Equals((ValueObject) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return GetEqualityComponents()
-                .Aggregate(1, (current, obj) =>
-                {
-                    unchecked
-                    {
-                        return current * 23 + (obj?.GetHashCode() ?? 0);
-                    }
-                });
-        }
+        public override int GetHashCode() => GetHashCodePrivate();
 
         public static bool operator ==(ValueObject a, ValueObject b)
         {
@@ -55,5 +40,26 @@ namespace Domain.ValueObject
         }
 
         public static bool operator !=(ValueObject a, ValueObject b) => !(a == b);
+
+#if ALLOW_UNSAFE_CODE
+        private int GetHashCodePrivate()
+        {
+            return GetEqualityComponents()
+                .Aggregate(1, (current, obj) =>
+                {
+                    unchecked
+                    {
+                        return current * 23 + (obj?.GetHashCode() ?? 0);
+                    }
+                });
+        }
+#else
+        private int GetHashCodePrivate()
+        {
+            return GetEqualityComponents()
+                .Select(x => x?.GetHashCode() ?? 0)
+                .Aggregate((x, y) => x ^ y);
+        }
+#endif
     }
 }

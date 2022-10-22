@@ -15,7 +15,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Operations\Operations.csproj" />
+      <ProjectReference Include="..\Application\Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Internal" />
     </ItemGroup>
 
 </Project>
