@@ -13,7 +13,7 @@ namespace Depra.Data.Module.IO.Mount
 
         public FileSystemInfoKind Kind => FileSystemInfoKind.FILE;
 
-        public LocalSystemFileInfo(string name, string path, IDirectory parent = null, IMountPoint mountPoint = null) : base(name, path, Path.GetFileNameWithoutExtension(path))
+        public LocalSystemFileInfo(string name, string path, IDirectory parent = null, IMountPoint mountPoint = null) : base(name, path, Path.GetExtension(path))
         {
             Parent = parent;
             MountPoint = mountPoint;

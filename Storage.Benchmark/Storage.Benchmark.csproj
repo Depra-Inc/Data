@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Module.IO\Module.IO.csproj" />
-      <ProjectReference Include="..\Storage\Storage.csproj" />
     </ItemGroup>
 
 </Project>

@@ -16,12 +16,14 @@ namespace Depra.Data.Module.IO.Scanning
             File.Exists(GetFullFilePath(fileName));
 
         public string GetFullFilePath(string fileName) =>
-            Path.Combine(_directory.FullPath, fileName) + _fileFormat;
+            Path.Combine(_directory.FullPath, fileName);
+            //+ _fileFormat;
 
         public IEnumerable<string> GetAllNames()
         {
             var allFiles = _directory.EnumerateFiles(_fileSearchPattern).ToArray();
-            return StripFilenamesExtension(allFiles);
+            return allFiles.Select(x => x.Name);
+            //return StripFilenamesExtension(allFiles);
         }
 
         public LocalDirectoryScanner(LocalDirectory directory, string fileFormat)

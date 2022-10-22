@@ -16,8 +16,8 @@ internal class LocalFileDataStorageTests
     private const string FILE_FORMAT = ".test";
     private const string FOLDER_NAME = "Test";
 
-    private static readonly string[] FREE_DATA_NAMES = {"FileData_1", "FileData_2", "FileData_3"};
-    private static readonly string[] EXISTED_DATA_NAMES = {"ExistedData_1", "ExistedData_2", "ExistedData_3"};
+    private static readonly string[] FREE_DATA_NAMES = {"FileData_1.test", "FileData_2.test", "FileData_3.test"};
+    private static readonly string[] EXISTED_DATA_NAMES = {"ExistedData_1.test", "ExistedData_2.test", "ExistedData_3.test"};
     private static readonly string DIRECTORY_PATH = Path.Combine(Environment.CurrentDirectory, FOLDER_NAME);
 
     private LocalDirectory _localDirectory = null!;
@@ -32,16 +32,16 @@ internal class LocalFileDataStorageTests
         var serializer = new BinarySerializer();
         _fileDataStorage = new LocalFIleDataStorage(serializer, _localDirectory, FILE_FORMAT);
 
-        FreeResources();
+        Helper.FreeResources(FREE_DATA_NAMES.Concat(EXISTED_DATA_NAMES), _directoryScanner);
         Helper.WarpUpStorage(_fileDataStorage, EXISTED_DATA_NAMES, () => new TestData());
     }
 
     [TearDown]
     public void TearDown()
     {
-        FreeResources();
-            
-        if (IsDirectoryEmpty(DIRECTORY_PATH))
+        Helper.FreeResources(FREE_DATA_NAMES.Concat(EXISTED_DATA_NAMES), _directoryScanner);
+
+        if (Directory.EnumerateFileSystemEntries(DIRECTORY_PATH).Any() == false)
         {
             Directory.Delete(DIRECTORY_PATH);
         }
@@ -59,6 +59,7 @@ internal class LocalFileDataStorageTests
         dataStorage.SaveData(randomExistedDataName, data);
 
         // Assert.
+        var allKeys = dataStorage.GetAllKeys();
         dataStorage.GetAllKeys().Should().Contain(randomExistedDataName);
     }
 
@@ -90,7 +91,8 @@ internal class LocalFileDataStorageTests
         dataStorage.SaveData(randomNonExistedDataName, data);
 
         // Assert.
-        dataStorage.GetAllKeys().Should().Contain(randomNonExistedDataName);
+        var allKeys = dataStorage.GetAllKeys();
+        allKeys.Should().Contain(randomNonExistedDataName);
     }
         
     [Test]
@@ -180,26 +182,5 @@ internal class LocalFileDataStorageTests
 
         // Assert.
         act.Should().Throw<InvalidPathException>();
-    }
-
-    private static LocalSystemFileDto CreateFileDto(string fileName) =>
-        new LocalSystemFileDto(fileName, Path.Combine(DIRECTORY_PATH, fileName), FILE_FORMAT);
-    
-    private void FreeResources()
-    {
-        var filesForDelete = new List<string>();
-        filesForDelete.AddRange(FREE_DATA_NAMES);
-        filesForDelete.AddRange(EXISTED_DATA_NAMES);
-
-        foreach (var fullFilePath in
-                 filesForDelete.Select(fileName => _directoryScanner.GetFullFilePath(fileName)))
-        {
-            File.Delete(fullFilePath);
-        }
-    }
-        
-    private static bool IsDirectoryEmpty(string path)
-    {
-        return !Directory.EnumerateFileSystemEntries(path).Any();
     }
 }
